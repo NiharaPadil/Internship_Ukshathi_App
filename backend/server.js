@@ -2,18 +2,19 @@ const express = require("express");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-//const bcrypt = require("bcryptjs"); // Import bcryptjs
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 // MySQL Connection
 const db = mysql.createConnection({
-  host: "localhost", 
-  user: "root",
-  password: "NiharaPadil@02022003",  
-  database: "Demo",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 db.connect((err) => {
@@ -26,22 +27,27 @@ db.connect((err) => {
 
 // Sign-up API
 app.post("/signup", async (req, res) => {
-  console.log("Received Signup Request:", req.body); // Debugging
-
   const { name, password, device_type } = req.body;
 
   if (!name || !password || !device_type) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
-  const sql = "INSERT INTO users (name, password, device_type) VALUES (?, ?, ?)";
-  db.query(sql, [name, password, device_type], (err, result) => {
-    if (err) {
-      console.error("Database Insert Error:", err); // Log database error
-      return res.status(500).json({ message: "Database error." });
-    }
-    res.status(201).json({ message: "User created successfully." });
-  });
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash password
+
+    const sql = "INSERT INTO users (name, password, device_type) VALUES (?, ?, ?)";
+    db.query(sql, [name, hashedPassword, device_type], (err, result) => {
+      if (err) {
+        console.error("Database Insert Error:", err);
+        return res.status(500).json({ message: "Database error." });
+      }
+      res.status(201).json({ message: "User created successfully." });
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 // Start Server

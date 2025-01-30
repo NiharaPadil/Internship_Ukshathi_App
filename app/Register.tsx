@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Alert, Text, StyleSheet } from "react-native";
+import { View, TextInput, Button, Alert, Text, StyleSheet ,Image, TouchableOpacity} from "react-native";
 //import bcrypt from "bcryptjs"; // Import bcryptjs
 
-const MainSignup = () => {
+const Register = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [deviceType, setDeviceType] = useState("");
@@ -41,6 +41,7 @@ const MainSignup = () => {
 
   return (
     <View style={styles.container}>
+    <Image source={require('../assets/images/logowithleaf.png')} style={styles.logoImage} />
       <Text style={styles.header}>Sign Up</Text>
       
       <TextInput
@@ -63,7 +64,12 @@ const MainSignup = () => {
         onChangeText={setDeviceType}
       />
 
-      <Button title="Sign Up" onPress={handleSignup} />
+      {/* <Button title="Sign Up" onPress={handleSignup} /> */}
+
+      <TouchableOpacity onPress={handleSignup} style={styles.SignInButton}>
+        <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -71,9 +77,15 @@ const MainSignup = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 20,
-    backgroundColor: "#f4f4f9",
+    top: -25,
+    justifyContent: 'center',
+    padding: 16,
+   backgroundColor: '#f3f7ea',
+  },
+  logoImage: {
+    width: '80%',
+    height: '20%',
+    alignSelf: 'center',
   },
   header: {
     fontSize: 30,
@@ -89,6 +101,19 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderRadius: 5,
   },
+  SignInButton: {
+    backgroundColor: '#1e7218',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    width: '90%',
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
 });
 
-export default MainSignup;
+export default Register;

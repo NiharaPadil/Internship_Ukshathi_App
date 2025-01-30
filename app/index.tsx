@@ -157,9 +157,11 @@ export default function Index() {
           />
         </TouchableOpacity>
       </View>
+
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
+
       <Text style={styles.orText}>OR</Text>
       <TouchableOpacity style={styles.googleButton}>
         <Image source={require('../assets/images/google.png')} style={styles.googleLogo} />
@@ -167,8 +169,8 @@ export default function Index() {
       </TouchableOpacity>
       <View style={styles.signupTextContainer}>
         <Text style={styles.signupText}>New User? </Text>
-        <TouchableOpacity onPress={() => router.push('./MainSignup')}>
-          <Text style={styles.signupLink}>Sign Up</Text>
+        <TouchableOpacity onPress={() => router.push('./Register')}>
+          <Text style={styles.signupLink}>Register</Text>
         </TouchableOpacity>
       </View>
     </View>
