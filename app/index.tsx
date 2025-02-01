@@ -1,94 +1,5 @@
 
 
-// import React, { useState } from 'react';
-// import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,Image,Pressable } from 'react-native';
-// import { router } from 'expo-router';
-
-
-// export default function index() {
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-//   const handleLogin = () => {
-//     if (username && password) {
-//       Alert.alert('Login Successful', `Welcome, ${username}!`);
-//     } else {
-//       Alert.alert('Error', 'Please enter both username and password.');
-//     }
-//   };
-
-//   // const handleOAuthLogin = (platform) => {
-//   //   Alert.alert(`OAuth Login`, `You selected ${platform} OAuth login.`);
-//   // };
-
-//   return (
-//     <View style={styles.container}>
-      
-//       {/* <Text style={styles.logoText}>Ukshati</Text> */}
-//       <Image source={require('.././assets/images/logowithleaf.png')} style={styles.logoImage} />
-//       <Text style={styles.loginText}>Login</Text>
-//       <TextInput
-//         placeholder="Email"
-//         // value={email}
-//         // onChangeText={setEmail}
-//         style={styles.input}
-//         placeholderTextColor="#a9a9a9"
-//       />
-
-      
-//       <View style={styles.passwordContainer}>
-//         <TextInput
-//           placeholder="Password"
-//           // value={password}
-//           // onChangeText={setPassword}
-//            secureTextEntry={!isPasswordVisible}
-//           style={styles.passwordInput}
-//           placeholderTextColor="#a9a9a9"
-//         />
-//         <TouchableOpacity
-//           onPress={() => setIsPasswordVisible(!isPasswordVisible)}
-//           style={styles.eyeIconContainer}
-//         >
-//           <Image
-//             source={isPasswordVisible ? require('.././assets/images/visible.png') : require('.././assets/images/hide.png')}
-//             style={styles.eyeIcon}
-//           />
-//         </TouchableOpacity>
-//       </View>
-
-
-      
-//       {/* {error && <Text style={styles.errorText}>{error}</Text>} */}
-
-//       {/* <TouchableOpacity>
-//         <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
-//       </TouchableOpacity> */}
-//       {/* <Button title="Set Data" onPress={setData} />
-//       <Button title="Get Data" onPress={getData} /> */}
-//       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-//         <Text style={styles.buttonText}>Login</Text>
-//       </TouchableOpacity>
-//       <Text style={styles.orText}>OR</Text>
-//       <TouchableOpacity style={styles.googleButton}>
-//         <Image source={require('.././assets/images/google.png')} style={styles.googleLogo} />
-//         <Text style={styles.googleButtonText}>Continue with Google</Text>
-//       </TouchableOpacity>
-     
-//       <View style={styles.signupTextContainer}>
-//         <Text style={styles.signupText}>New User ? </Text>
-//         <Pressable onPress={() => router.push('./MainSignup')}>
-//           <Text style={styles.signupLink}>Sign Up</Text>
-//         </Pressable>
-        
-//       </View>
-//     </View>
-//   );
-// };
-
-
-
-
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
@@ -99,25 +10,25 @@ export default function Index() {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  
+
   const handleLogin = async () => {
     if (username && password) {
       try {
-        const response = await fetch('http://localhost:5000/login', {
+        console.log('Attempting login with', { username, password });
+  
+        const response = await fetch("http://192.168.1.35:5000/login", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ name: username, password: password }),
         });
 
-        const data = await response.json();
 
+        const data = await response.json();
         if (response.ok) {
-          // On success, handle the response (e.g., store JWT token, navigate to the home screen)
           Alert.alert('Login Successful', `Welcome, ${username}!`);
-          // You can store the token securely here (e.g., AsyncStorage or React Context API)
-          // After login, navigate to the Home screen
-          //router.push('/Home'); // Assuming you have a Home page in your app
         } else {
           Alert.alert('Login Failed', data.message);
         }
@@ -129,7 +40,7 @@ export default function Index() {
       Alert.alert('Error', 'Please enter both username and password.');
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <Image source={require('../assets/images/logowithleaf.png')} style={styles.logoImage} />
@@ -190,14 +101,6 @@ const styles = StyleSheet.create({
     height: '20%',
     alignSelf: 'center',
   },
-  // logoText: {
-  //   fontSize: 56,
-  //   fontWeight: 'bold',
-  //   textAlign: 'center',
-  //   marginVertical: 20,
-  //   color: '#4f7208',
-    
-  // },
   loginText: {
     fontSize: 20,
     textAlign: 'left',
@@ -296,3 +199,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+
+
+

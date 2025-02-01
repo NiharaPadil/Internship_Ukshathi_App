@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Alert, Text, StyleSheet ,Image, TouchableOpacity} from "react-native";
-//import bcrypt from "bcryptjs"; // Import bcryptjs
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -14,10 +13,8 @@ const Register = () => {
     }
 
     try {
-      // Hash the password using bcrypt before sending it
-      //const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
 
-      const response = await fetch("http://192.168.1.36:5000/signup", {
+      const response = await fetch("http://192.168.1.35:5000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,8 +60,6 @@ const Register = () => {
         value={deviceType}
         onChangeText={setDeviceType}
       />
-
-      {/* <Button title="Sign Up" onPress={handleSignup} /> */}
 
       <TouchableOpacity onPress={handleSignup} style={styles.SignInButton}>
         <Text style={styles.buttonText}>Register</Text>
