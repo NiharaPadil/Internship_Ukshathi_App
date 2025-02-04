@@ -26,16 +26,16 @@ export default function LandingScreen() {
 
   const userPermissions = userProducts;
   const items = [
-    { name: "uno", desc: "A single valve system for precise, Wifi/4G-enabled watering of up to 100 plants, all in a weatherproof IP65 design", 
+    { name: "Uno", desc: "A single valve system for precise, Wifi/4G-enabled watering of up to 100 plants, all in a weatherproof IP65 design", 
       //route: "/Product_screen/uno", 
       image: require("../assets/images/icon.png") },
-    { name: "quadra", desc: "QUADRA revolutionizes large-scale irrigation with solar-powered nodes managing up to 4 valves, compatible with various methods, and featuring LoRa® technology for precise wireless control via Wi-Fi or 4G in a durable IP65 design.", 
+    { name: "Quadra", desc: "QUADRA revolutionizes large-scale irrigation with solar-powered nodes managing up to 4 valves, compatible with various methods, and featuring LoRa® technology for precise wireless control via Wi-Fi or 4G in a durable IP65 design.", 
       //route: "/Product_screen/quadra", 
       image: require("../assets/images/icon.png") },
-    { name: "hexa", desc: "A sleek hexagonal tank with smart scheduling, designed for balconies without taps, integrates with RO units and AC compressors, and offers Wi-Fi/4G connectivity in an IP65 weatherproof build.", 
+    { name: "Hexa", desc: "A sleek hexagonal tank with smart scheduling, designed for balconies without taps, integrates with RO units and AC compressors, and offers Wi-Fi/4G connectivity in an IP65 weatherproof build.", 
       //route: "/Product_screen/hexa", 
       image: require("../assets/images/icon.png") },
-    { name: "octa", desc: "Manage up to 8 valves with precision scheduling, perfect for large outdoor spaces, and connect via Wi-Fi or 4G in a rugged, IP65 weatherproof design, ensuring your garden thrives effortlessly.",
+    { name: "Octa", desc: "Manage up to 8 valves with precision scheduling, perfect for large outdoor spaces, and connect via Wi-Fi or 4G in a rugged, IP65 weatherproof design, ensuring your garden thrives effortlessly.",
        //route: "/Product_screen/octa", 
        image: require("../assets/images/icon.png") },
   ];
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 20,
-    backgroundColor: "#A8D5BA",
+    backgroundColor: "#86C39A",
     borderRadius: 12,
     width: 300,
     alignItems: "center",
