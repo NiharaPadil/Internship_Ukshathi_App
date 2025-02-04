@@ -7,12 +7,11 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 const app = express();
-app.use(cors({
-  origin: 'http://192.168.1.35:5000',  // Change to specific origin {ipconfig -> IPv4 Address}
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+app.use(cors({origin: '*' 
 }));
+
 app.use(express.json());
+
 
 
 // MySQL Connection (Using Pool for Better Stability)
@@ -114,8 +113,26 @@ app.post('/login', (req, res) => {
   });
 });
 
+
+// API Endpoint
+app.get('/user-products/:id', (req, res) => {
+  const id = req.params.id;
+  const query = `
+      SELECT up.product_name 
+      FROM user_products up
+      WHERE up.user_id = ?;
+  `;
+  
+  db.query(query, [id], (err, results) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(results.map(row => row.product_name));  
+  });
+});
+
+
 // Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {  // ✅ Bind to 0.0.0.0
+    console.log(`Server running on port ${PORT}`);
+
 });

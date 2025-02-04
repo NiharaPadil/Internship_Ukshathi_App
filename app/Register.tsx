@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Alert, Text, StyleSheet ,Image, TouchableOpacity} from "react-native";
+import { View, TextInput, Alert, Text, StyleSheet ,Image, TouchableOpacity} from "react-native";
+import Constants from 'expo-constants';
 
 const Register = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [deviceType, setDeviceType] = useState("");
+  const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL ?? '';
 
   const handleSignup = async () => {
     if (!name || !password || !deviceType) {
@@ -14,7 +16,7 @@ const Register = () => {
 
     try {
 
-      const response = await fetch("http://192.168.1.35:5000/signup", {
+      const response = await fetch(`${API_BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

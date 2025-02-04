@@ -4,11 +4,17 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { router } from 'expo-router';
+import Constants from 'expo-constants';
+
+
+
 
 export default function Index() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL ?? '';
+
 
   
 
@@ -17,7 +23,7 @@ export default function Index() {
       try {
         console.log('Attempting login with', { username, password });
   
-        const response = await fetch("http://192.168.1.35:5000/login", {
+        const response = await fetch(`${API_BASE_URL}/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -29,6 +35,10 @@ export default function Index() {
         const data = await response.json();
         if (response.ok) {
           Alert.alert('Login Successful', `Welcome, ${username}!`);
+
+          router.push('./Landing');
+
+
         } else {
           Alert.alert('Login Failed', data.message);
         }

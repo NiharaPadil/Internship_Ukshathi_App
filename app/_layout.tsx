@@ -9,8 +9,8 @@ export default function Layout() {
       }}
     >
       {/* Define screens here */}
-      {/* <Stack.Screen name="index" options={{ title: "index" }} /> */}
-      {/* <Stack.Screen name="MainSignup" options={{ title: "Sign Up" }} />*/}
+      <Stack.Screen name="Landing" options={{ title: "Landing" }} />
+      <Stack.Screen name="Register" options={{ title: "Register" }} />
       {/*<Stack.Screen name="home" options={{ title: "Home" }} /> */}
     </Stack>
   );
