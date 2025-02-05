@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { router } from 'expo-router';
@@ -34,7 +31,8 @@ export default function Index() {
 
         const data = await response.json();
         if (response.ok) {
-          Alert.alert('Login Successful', `Welcome, ${username}!`);
+          // Alert.alert('Login Successful', `Welcome, ${username}!`);
+          Alert.alert('Login Successful', `Welcome, ${username}! User ID: ${data.user_id}`);
 
           router.push('./Landing');
 
@@ -50,52 +48,51 @@ export default function Index() {
       Alert.alert('Error', 'Please enter both username and password.');
     }
   };
-  
-  return (
-    <View style={styles.container}>
-      <Image source={require('../assets/images/logowithleaf.png')} style={styles.logoImage} />
-      <Text style={styles.loginText}>Login</Text>
+return (
+  <View style={styles.container}>
+    <Image source={require('../assets/images/logowithleaf.png')} style={styles.logoImage} />
+    <Text style={styles.loginText}>Login</Text>
+    <TextInput
+      placeholder="Email"
+      value={username}
+      onChangeText={setUsername}
+      style={styles.input}
+      placeholderTextColor="#a9a9a9"
+    />
+    <View style={styles.passwordContainer}>
       <TextInput
-        placeholder="Email"
-        value={username}
-        onChangeText={setUsername}
-        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry={!isPasswordVisible}
+        style={styles.passwordInput}
         placeholderTextColor="#a9a9a9"
       />
-      <View style={styles.passwordContainer}>
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={!isPasswordVisible}
-          style={styles.passwordInput}
-          placeholderTextColor="#a9a9a9"
+      <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)} style={styles.eyeIconContainer}>
+        <Image
+          source={isPasswordVisible ? require('../assets/images/visible.png') : require('../assets/images/hide.png')}
+          style={styles.eyeIcon}
         />
-        <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)} style={styles.eyeIconContainer}>
-          <Image
-            source={isPasswordVisible ? require('../assets/images/visible.png') : require('../assets/images/hide.png')}
-            style={styles.eyeIcon}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-
-      <Text style={styles.orText}>OR</Text>
-      <TouchableOpacity style={styles.googleButton}>
-        <Image source={require('../assets/images/google.png')} style={styles.googleLogo} />
-        <Text style={styles.googleButtonText}>Continue with Google</Text>
-      </TouchableOpacity>
-      <View style={styles.signupTextContainer}>
-        <Text style={styles.signupText}>New User? </Text>
-        <TouchableOpacity onPress={() => router.push('./Register')}>
-          <Text style={styles.signupLink}>Register</Text>
-        </TouchableOpacity>
-      </View>
     </View>
-  );
+
+    <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
+      <Text style={styles.buttonText}>Login</Text>
+    </TouchableOpacity>
+
+    <Text style={styles.orText}>OR</Text>
+    <TouchableOpacity style={styles.googleButton}>
+      <Image source={require('../assets/images/google.png')} style={styles.googleLogo} />
+      <Text style={styles.googleButtonText}>Continue with Google</Text>
+    </TouchableOpacity>
+    <View style={styles.signupTextContainer}>
+      <Text style={styles.signupText}>New User? </Text>
+      <TouchableOpacity onPress={() => router.push('./Register')}>
+        <Text style={styles.signupLink}>Register</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
@@ -260,52 +257,7 @@ const styles = StyleSheet.create({
 //     }
 //   };
 
-//   return (
-//     <View style={styles.container}>
-//       <Image source={require('../assets/images/logowithleaf.png')} style={styles.logoImage} />
-//       <Text style={styles.loginText}>Login</Text>
-//       <TextInput
-//         placeholder="Email"
-//         value={username}
-//         onChangeText={setUsername}
-//         style={styles.input}
-//         placeholderTextColor="#a9a9a9"
-//       />
-//       <View style={styles.passwordContainer}>
-//         <TextInput
-//           placeholder="Password"
-//           value={password}
-//           onChangeText={setPassword}
-//           secureTextEntry={!isPasswordVisible}
-//           style={styles.passwordInput}
-//           placeholderTextColor="#a9a9a9"
-//         />
-//         <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)} style={styles.eyeIconContainer}>
-//           <Image
-//             source={isPasswordVisible ? require('../assets/images/visible.png') : require('../assets/images/hide.png')}
-//             style={styles.eyeIcon}
-//           />
-//         </TouchableOpacity>
-//       </View>
-
-//       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-//         <Text style={styles.buttonText}>Login</Text>
-//       </TouchableOpacity>
-
-//       <Text style={styles.orText}>OR</Text>
-//       <TouchableOpacity style={styles.googleButton}>
-//         <Image source={require('../assets/images/google.png')} style={styles.googleLogo} />
-//         <Text style={styles.googleButtonText}>Continue with Google</Text>
-//       </TouchableOpacity>
-//       <View style={styles.signupTextContainer}>
-//         <Text style={styles.signupText}>New User? </Text>
-//         <TouchableOpacity onPress={() => router.push('./Register')}>
-//           <Text style={styles.signupLink}>Register</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// }
+  
 
 
 // const styles = StyleSheet.create({
