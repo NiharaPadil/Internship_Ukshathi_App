@@ -1,21 +1,42 @@
+//propelry workinggg with usr_id
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { router } from 'expo-router';
 import Constants from 'expo-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Index() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  
   const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL ?? '';
 
-//handling login inputs
+  //just to check whether data has been stored or no (can remove once confirmed), //debugging
+  const loadData = async () => {
+    try {  
+      const storedUserId = await AsyncStorage.getItem('user_id'); // geting id from storage which we stored 
+      if (storedUserId !== null) {
+        console.log('User ID from AsyncStorage:', storedUserId); // This should log the saved user_id, debugg
+      } else {
+        console.log('No user ID found in AsyncStorage');
+      }
+    } catch (error) {
+      console.error('Error loading user ID from AsyncStorage:', error);
+    }
+  };
 
+
+
+  
+//handling login inputs
   const handleLogin = async () => { 
     if (username && password) {
         try {
             console.log('Attempting login with', { username, password });
-
 
             const response = await fetch(`${API_BASE_URL}/login`, {
                 method: 'POST',
@@ -24,32 +45,40 @@ export default function Index() {
                 },
                 body: JSON.stringify({ name: username, password: password }),
             });
-//receving data
+
+              //data of login
             const data = await response.json();
-            console.log('Full API Response in Frontend:', data); //  Debugging log
+            console.log('Full API Response in Frontend:', data); // debugging log
 
             if (response.ok) {
                 if (!data.user_id) {
-                    console.error('ERROR: User ID is missing in API response'); // Debugging
+                    console.error('ERROR: User ID is missing in API response'); //Debug log
                 } else {
-                    console.log(' Received User ID:', data.user_id); //checking whetehr its reviced
+                    console.log(' Received User ID:', data.user_id); //to check whetehr id is received
+
+                    //user_id being stored at storage
+                    await AsyncStorage.setItem('user_id', data.user_id.toString());
+
+                    //just a function to check whetehr it has beeing stored(debug), can remove once confirmed with working
+                    loadData();
                 }
-
-                
+            
                 Alert.alert('Login Successful', `Welcome, ${username}!`);
-                router.push('./Landing'); //connecting to landing page
-
+                router.push('./Landing');
+                
             } else {
                 Alert.alert('Login Failed', data.message);
             }
         } catch (error) {
-            console.error('Fetch Error:', error);
+            console.error('Fetch Error:', error); //debug
             Alert.alert('Error', 'Something went wrong.');
         }
     } else {
         Alert.alert('Error', 'Please enter both username and password.');
     }
 };
+
+
 return (
   <View style={styles.container}>
     {/* for logo image */}
@@ -103,6 +132,7 @@ return (
   </View>
 );
 }
+
  //Styling
 const styles = StyleSheet.create({
   container: {
