@@ -36,30 +36,61 @@ db.getConnection((err, connection) => {
 });
 
 
-// Sign-up API
-app.post("/signup", async (req, res) => {
-  let { name, password, device_type } = req.body;
 
-  if (!name || !password || !device_type) {
+
+//lima signinn
+app.post("/signup", async (req, res) => {
+  let { name, email, password, device_types } = req.body;
+
+  // Validate all fields
+  if (!name || !email || !password || !device_types || device_types.length === 0) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
   try {
     // Convert to string and trim inputs
     name = name.toString().trim();
+    email = email.toString().trim();
     password = password.toString().trim();
-    device_type = device_type.toString().trim();
+    device_types = device_types.map((device) => device.toString().trim());
 
     // Hash password with 10 salt rounds
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const sql = "INSERT INTO users (name, password, device_type) VALUES (?, ?, ?)";
-    db.query(sql, [name, hashedPassword, device_type], (err, result) => {
+    // Insert user data into users table
+    const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    db.query(sql, [name, email, hashedPassword], (err, result) => {
       if (err) {
         console.error("Database Insert Error:", err);
         return res.status(500).json({ message: "Database error." });
       }
-      res.status(201).json({ message: "User created successfully." });
+
+      // After user creation, insert device types into user_products table
+      const userId = result.insertId; // Get the newly created user_id
+
+      // Prepare device type insertions
+      const deviceInsertQueries = device_types.map((device) => {
+        return new Promise((resolve, reject) => {
+          const deviceSql = "INSERT INTO user_products (user_id, product_name) VALUES (?, ?)";
+          db.query(deviceSql, [userId, device], (err, deviceResult) => {
+            if (err) {
+              console.error("Device Insert Error:", err);
+              reject(err);
+            } else {
+              resolve(deviceResult);
+            }
+          });
+        });
+      });
+
+      // Wait for all device types to be inserted
+      Promise.all(deviceInsertQueries)
+        .then(() => {
+          res.status(201).json({ message: "User created successfully." });
+        })
+        .catch(() => {
+          res.status(500).json({ message: "Error saving device types." });
+        });
     });
   } catch (error) {
     console.error(error);
@@ -96,13 +127,20 @@ app.post('/login', (req, res) => {
 
     const user = results[0];
     console.log('Database Result:', user);
+    console.log('User ID from DB:', user.user_id); 
+
 
     try {
       const isMatch = await bcrypt.compare(password, user.password); // Compare the hashed password
       console.log('Password Match Result:', isMatch);
 
       if (isMatch) {
-        return res.status(200).json({ message: 'Login successful' });
+        console.log('Sending Response:', {
+          message: 'Login successful',
+          user_id: user.user_id  // Make sure it's `user_id`, not `id`
+        });
+        return res.json({ message: 'Login successful', user_id: user.user_id });
+
       } else {
         return res.status(400).json({ message: 'Invalid password' });
       }
