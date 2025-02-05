@@ -8,54 +8,30 @@ export default function LandingScreen() {
   const router = useRouter();
   const [hovered, setHovered] = useState<string | null>(null);
   const [userProducts, setUserProducts] = useState<string[]>([]);
+  //for now manuallyy giving user id
   const id = 1;
   const [userId, setUserId] = useState<string | null>(null); 
   const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL ?? '';
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        //fetching based on id
         const response = await fetch(`${API_BASE_URL}/user-products/${id}`);
         const data = await response.json();
-        console.log("User products:", data);
+        console.log("User products:", data); //debugging
         setUserProducts(data);
       } catch (error) {
-        console.error("Error fetching user products:", error);
+        console.error("Error fetching user products:", error);//debigging
       }
     };
     fetchData();
   }, []);
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       // Retrieve user_id from AsyncStorage
-  //       const storedUserId = await AsyncStorage.getItem('user_id');
-  //       if (!storedUserId) {
-  //         console.error("No user_id found in storage");
-  //         Alert.alert("Error", "User ID not found. Please login again.");
-  //         return;
-  //       }
-        
-  //       setUserId(storedUserId); // Store userId in state
 
-  //       console.log("Retrieved user_id:", storedUserId);
-
-  //       // Fetch user-specific products using user_id
-  //       const response = await fetch(`${API_BASE_URL}/user-products/${storedUserId}`);
-  //       const data = await response.json();
-
-  //       console.log("User products:", data);
-  //       setUserProducts(data); // Store allowed product list in state
-
-  //     } catch (error) {
-  //       console.error("Error fetching user products:", error);
-  //     }
-  //   };
-
-  //   fetchUserData();
-  // }, [])
 
   const userPermissions = userProducts;
+
+  //the products items
   const items = [
     { name: "Uno", desc: "A single valve system for precise, Wifi/4G-enabled watering of up to 100 plants, all in a weatherproof IP65 design", 
       //route: "/Product_screen/uno", 
@@ -72,10 +48,17 @@ export default function LandingScreen() {
   ];
 
   return (
+
     <ScrollView contentContainerStyle={styles.scrollContainer}>
+
+      {/* enabling and disabling opeartion of products */}
+
       <View style={styles.container}>
         {items.map((item) => {
+
+          {/*checking wheter includes any itemms*/}
           const isDisabled = !userPermissions.includes(item.name);
+
           return (
             <Pressable
               key={item.name}
@@ -84,6 +67,11 @@ export default function LandingScreen() {
               onPressOut={() => setHovered(null)}
               style={[styles.item, isDisabled && styles.disabledItem, hovered === item.name && styles.hoveredItem]}
             >
+
+
+              {/*images of products */}
+
+
               <View style={styles.imageContainer}>
                 <Image source={item.image} style={[styles.image, hovered === item.name && styles.imageZoom]} />
               </View>
@@ -102,6 +90,8 @@ export default function LandingScreen() {
     </ScrollView>
   );
 }
+
+//Styling
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -360,3 +350,35 @@ const styles = StyleSheet.create({
 //     backgroundColor: "#5E9473",
 //   },
 // });
+
+
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       // Retrieve user_id from AsyncStorage
+  //       const storedUserId = await AsyncStorage.getItem('user_id');
+  //       if (!storedUserId) {
+  //         console.error("No user_id found in storage");
+  //         Alert.alert("Error", "User ID not found. Please login again.");
+  //         return;
+  //       }
+        
+  //       setUserId(storedUserId); // Store userId in state
+
+  //       console.log("Retrieved user_id:", storedUserId);
+
+  //       // Fetch user-specific products using user_id
+  //       const response = await fetch(`${API_BASE_URL}/user-products/${storedUserId}`);
+  //       const data = await response.json();
+
+  //       console.log("User products:", data);
+  //       setUserProducts(data); // Store allowed product list in state
+
+  //     } catch (error) {
+  //       console.error("Error fetching user products:", error);
+  //     }
+  //   };
+
+  //   fetchUserData();
+  // }, [])
