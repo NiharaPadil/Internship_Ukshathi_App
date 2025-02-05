@@ -1,4 +1,4 @@
-//index.tsx
+//index.js
 
 //propelry workinggg with usr_id
 import React, { useState } from 'react';
