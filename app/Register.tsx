@@ -1,3 +1,5 @@
+//Register.tsx
+
 //new one with all necessaru changes
 import React, { useState } from "react";
 import { View, TextInput, Alert, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";

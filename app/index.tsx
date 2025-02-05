@@ -1,5 +1,6 @@
-//propelry workinggg with usr_id
+//index.tsx
 
+//propelry workinggg with usr_id
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { router } from 'expo-router';
